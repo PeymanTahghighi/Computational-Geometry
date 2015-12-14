@@ -23,6 +23,12 @@ struct Point
 		if (this->x != rhs.x || this->y != rhs.y) return true;
 		return false;
 	}
+
+	const bool operator ==(const Point & rhs) const
+	{
+		if (this->x == rhs.x && this->y == rhs.y) return true;
+		return false;
+	}
 	Point &operator+(int i)
 	{
 		this->x += i;
@@ -108,11 +114,20 @@ protected:
 	{
 		float m = (p2.y - p1.y) / (p2.x - p1.x);
 		float xmax = p1.x > p2.x ? p1.x : p2.x;
-		for (float i = p1.x<p2.x ? p1.x : p2.x; i < xmax; i++)
+		for (float i = p1.x<p2.x ? p1.x : p2.x; i < xmax; i+=0.05f)
 		{
 			float y = m*(i - p1.x) + p1.y;;
 			SetPixel(this->m_hdc, i, y, color);
 		}
+	}
+
+	template<typename T>
+	bool HaveMember(std::vector<T> vec, T data)
+	{
+		for (auto const & member : vec)
+			if (member == data) return true;
+
+		return false;
 	}
 
 private:

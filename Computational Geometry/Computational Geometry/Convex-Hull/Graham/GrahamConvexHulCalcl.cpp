@@ -53,7 +53,12 @@ void GrahamConvexHulCalcl::CalculateConvexHullPoints()
 
 			int j = 0;
 			
-			if (points[i] == p) continue;// Do Not Check Current Point.
+			if (points[i] == p || HaveMember<Point>(selectedPoints,points[i]))//Check This Point Is Selected Before Or Not.
+			{
+
+				continue;// Do Not Check Current Point.
+
+			}
 
 			//Simple Drawing**
 			SelectObject(this->GetHDC(), brush1);
@@ -70,6 +75,7 @@ void GrahamConvexHulCalcl::CalculateConvexHullPoints()
 			for (j = 0; j < points.size(); j++)
 			{
 				std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
 				if (i != j && points[i]!=p)
 				{
 					//Simple Waiting**
@@ -99,12 +105,13 @@ void GrahamConvexHulCalcl::CalculateConvexHullPoints()
 
 					}
 
-					//Left Turn Detected.
+					//Point[i] Has A Left Turn When We Got From p->points[i]->points[j]
 					else
 					{
 						//Draw A Green Line For Left Turn
 						std::this_thread::sleep_for(std::chrono::milliseconds(500));
 						DrawLine(points[i], points[j], RGB(0, 255, 0));
+
 						//*******************************
 					}
 				}
@@ -120,6 +127,7 @@ void GrahamConvexHulCalcl::CalculateConvexHullPoints()
 				if (k == points.size()) continue;//If We Draw All Lines.
 				std::this_thread::sleep_for(std::chrono::milliseconds(100));
 				DrawLine(points[i], points[k], RGB(255, 255, 255));
+				
 			}
 			//**************************************
 
