@@ -14,6 +14,7 @@ using namespace std;
 HWND hWnd;
 LPCTSTR ClsName = "Computational geometry";
 LPCTSTR WindowCaption = "Computational geometry";
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 //---------------------------------------------------------------------------
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
@@ -67,7 +68,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 	HDC hDC;	
 	static int StartX, StartY;
 	static int EndX, EndY;
-	static int clickCounter = 0;
 
 	switch (Msg)
 	{
@@ -96,15 +96,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 			EndX = LOWORD(lParam);
 			EndY = HIWORD(lParam);
 
-			
 			GWC->AddPoint(StartX, StartY);
 			GCH->AddPoint(StartX, StartY);
 			Ellipse(hDC, StartX - 5, StartY - 5, StartX + 5, StartY + 5);	
 			
-			OutputDebugStringA(std::to_string(clickCounter).c_str());
-			
 			SetROP2(hDC, R2_XORPEN);
-			clickCounter++;
 
 			ReleaseDC(hWnd, hDC);
 		}

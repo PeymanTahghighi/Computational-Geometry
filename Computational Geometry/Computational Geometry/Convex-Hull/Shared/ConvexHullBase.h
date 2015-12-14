@@ -4,6 +4,7 @@
 #include<Windows.h>
 
 using std::vector;
+
 #define PI 3.14159265
 
 struct Point
@@ -11,7 +12,7 @@ struct Point
 	float x, y;
 	Point() : x(0.0f), y(0.0f) {}
 	Point(float _x, float _y) : x(_x), y(_y) {}
-	float operator^(Point p2) { return this->x*p2.y - this->y*p2.x; }
+
 	bool operator ==(const Point & rhs)
 	{
 		if (this->x == rhs.x && this->y == rhs.y) return true;
@@ -64,23 +65,12 @@ struct Line
 
 };
 
-struct PolarPoint
-{
-	float r, phi;
-	PolarPoint(float _x, float _y)
-	{
-		this->r = sqrtf(pow(_x, 2) + pow(_y, 2));
-		this->phi = atan2(_x, _y);
-	}
-	PolarPoint() = delete;
-};
-
 class ConvexHullBase
 {
 
 public:
-	ConvexHullBase() = default;
 
+	ConvexHullBase() = default;
 
 public:
 	virtual void CalculateConvexHullPoints() = 0;
@@ -101,24 +91,9 @@ public:
 
 protected:
 
-	virtual void AddPolarPoint(PolarPoint p) { this->m_allPolarPoints.push_back(p); }
-
-	virtual vector<PolarPoint> GetPolarPoints() { return this->m_allPolarPoints; }
-
 	virtual void SetAllPoints(vector<Point> &p) { this->m_allPoints = p; }
 
 	virtual void AddConvexHullPoint(Point p) { this->m_convexHullPoints.push_back(p); }
-
-	template<typename T>
-	vector<T> DeleteMember(vector<T> vec, T p)
-	{
-		vector<T> ret;
-		for (auto & member : vec)
-		{
-			if (member != p) ret.push_back(member);
-		}
-		return ret;
-	}
 
 	virtual int CalculateTripletOrientation(Point p, Point q, Point r)
 	{
@@ -132,8 +107,8 @@ protected:
 	virtual void DrawLine(Point p1, Point p2,COLORREF color)
 	{
 		float m = (p2.y - p1.y) / (p2.x - p1.x);
-		int xmax = p1.x > p2.x ? p1.x : p2.x;
-		for (int i = p1.x<p2.x ? p1.x : p2.x; i < xmax; i++)
+		float xmax = p1.x > p2.x ? p1.x : p2.x;
+		for (float i = p1.x<p2.x ? p1.x : p2.x; i < xmax; i++)
 		{
 			float y = m*(i - p1.x) + p1.y;;
 			SetPixel(this->m_hdc, i, y, color);
@@ -143,7 +118,5 @@ protected:
 private:
 	vector<Point> m_allPoints;
 	vector<Point> m_convexHullPoints;
-	vector<PolarPoint> m_allPolarPoints;
 	HDC m_hdc;
-
 };

@@ -11,9 +11,6 @@ public:
 public:
 	virtual void CalculateConvexHullPoints() override;
 
-
-private:
 };
 
 extern GrahamConvexHulCalcl *GCH;
-
